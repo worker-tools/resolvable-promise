@@ -61,4 +61,16 @@ describe('Resolvable', () => {
     await expect(rejectingResolvable).rejects.toBeInstanceOf(Error)
   });
 
+  test('should have a settled property', async () => {
+    const resolvingResolvable = new ResolvablePromise((resolve) => setTimeout(() => resolve(42), 1));
+    expect(resolvingResolvable.settled).toBe(false)
+    await resolvingResolvable;
+    expect(resolvingResolvable.settled).toBe(true)
+
+    const rejectingResolvable = new ResolvablePromise((_r, reject) => setTimeout(() => reject(Error())))
+    expect(rejectingResolvable.settled).toBe(false)
+    await rejectingResolvable.catch(() => {});
+    expect(rejectingResolvable.settled).toBe(true)
+  });
+
 });
