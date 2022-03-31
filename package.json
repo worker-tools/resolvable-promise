@@ -35,11 +35,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/worker-tools/router.git"
+    "url": "git+https://github.com/worker-tools/resolvable-promise.git"
   },
   "bugs": {
-    "url": "https://github.com/worker-tools/router/issues"
+    "url": "https://github.com/worker-tools/resolvable-promise/issues"
   },
-  "homepage": "https://github.com/worker-tools/router#readme",
+  "homepage": "https://github.com/worker-tools/resolvable-promise#readme",
   "keywords": []
 }
