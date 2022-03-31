@@ -73,4 +73,18 @@ describe('Resolvable', () => {
     expect(rejectingResolvable.settled).toBe(true)
   });
 
+  test('should resolved to the original value', async () => {
+    const p = new ResolvablePromise(Promise.resolve(42));
+    await p
+    expect(() => p.resolve(43)).not.toThrow() // should it throw? warning instead?
+    await expect(p).resolves.toBe(42);
+  })
+
+  test('should resolved to the original value 2', async () => {
+    const p = new ResolvablePromise(Promise.resolve(42));
+    await p
+    expect(() => p.reject(Error())).not.toThrow() // should it throw? warning instead?
+    await expect(p).resolves.toBe(42);
+  })
+
 });

@@ -7,6 +7,7 @@ export class ResolvablePromise<T> /* extends Promise<T> */ implements Promise<T>
   #resolve!: Resolve<T>;
   #reject!: Reject;
   #settled = false;
+
   constructor(init?: ResolvablePromiseInit<T> | null) {
     // super(_ => _(void 0 as any));
     this.#promise = new Promise((res, rej) => {
@@ -17,14 +18,28 @@ export class ResolvablePromise<T> /* extends Promise<T> */ implements Promise<T>
       else if (typeof init.then === 'function') init.then(resolve, reject);
     });
   }
+
   resolve(x: T) {
+    if (globalThis.process?.env?.NODE_ENV === 'development' || (<any>globalThis).DEBUG) {
+      if (this.#settled) {
+        console.warn('ResolvablePromise cannot resolve after it has already settled. This is a no-op') 
+      }
+    }
     this.#resolve(x);
   }
+
   reject(reason?: any) {
+    if (globalThis.process?.env?.NODE_ENV === 'development' || (<any>globalThis).DEBUG) {
+      if (this.#settled) {
+        console.warn('ResolvablePromise cannot reject after it has already settled. This is a no-op') 
+      }
+    }
     this.#reject(reason)
   }
+
   /** @deprecated Name of this property might change */
   get settled() { return this.#settled }
+
   then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null): Promise<TResult1 | TResult2> {
     return this.#promise.then(onfulfilled, onrejected);
   }
@@ -34,6 +49,7 @@ export class ResolvablePromise<T> /* extends Promise<T> */ implements Promise<T>
   finally(onfinally?: (() => void) | null): Promise<T> {
     return this.#promise.finally(onfinally);
   }
+
   get [Symbol.toStringTag]() { return 'ResolvablePromise' };
 }
 
