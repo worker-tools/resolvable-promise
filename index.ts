@@ -20,7 +20,7 @@ export class ResolvablePromise<T> /* extends Promise<T> */ implements Promise<T>
   }
 
   resolve(x: T) {
-    if (globalThis.process?.env?.NODE_ENV === 'development' || (<any>globalThis).DEBUG) {
+    if ((<any>globalThis).process?.env?.NODE_ENV === 'development' || (<any>globalThis).DEBUG) {
       if (this.#settled) {
         console.warn('ResolvablePromise cannot resolve after it has already settled. This is a no-op') 
       }
@@ -29,7 +29,7 @@ export class ResolvablePromise<T> /* extends Promise<T> */ implements Promise<T>
   }
 
   reject(reason?: any) {
-    if (globalThis.process?.env?.NODE_ENV === 'development' || (<any>globalThis).DEBUG) {
+    if ((<any>globalThis).process?.env?.NODE_ENV === 'development' || (<any>globalThis).DEBUG) {
       if (this.#settled) {
         console.warn('ResolvablePromise cannot reject after it has already settled. This is a no-op') 
       }

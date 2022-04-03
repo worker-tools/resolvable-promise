@@ -1,4 +1,4 @@
-node_modules
+/npm
 *.tgz
 /*.d.ts
 /*.js
