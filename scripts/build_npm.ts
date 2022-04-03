@@ -1,15 +1,14 @@
+#!/usr/bin/env -S deno run -A
+
 // ex. scripts/build_npm.ts
+import { basename, extname } from "https://deno.land/std@0.133.0/path/mod.ts";
 import { build, emptyDir } from "https://deno.land/x/dnt/mod.ts";
+
+import { latestVersion, copyMdFiles } from 'https://gist.githubusercontent.com/qwtel/ecf0c3ba7069a127b3d144afc06952f5/raw/latest-version.ts'
 
 await emptyDir("./npm");
 
-async function latestVersion() {
-  return new TextDecoder().decode(
-    await Deno.run({ cmd: ['git', 'tag', '--sort=committerdate'], stdout: 'piped' }).output()
-  ).trim().split('\n').at(-1)?.replace(/^v/, '') ?? '0.0.1'
-}
-
-const name = 'resolvable-promise'
+const name = basename(Deno.cwd())
 
 await build({
   entryPoints: ["./index.ts"],
@@ -39,9 +38,13 @@ await build({
     bugs: {
       url: `https://github.com/worker-tools/${name}/issues`,
     },
+    homepage: `https://workers.tools/#${name}`,
+  },
+  packageManager: 'pnpm',
+  compilerOptions: {
+    sourceMap: true,
   },
 });
 
 // post build steps
-Deno.copyFileSync("LICENSE.md", "npm/LICENSE");
-Deno.copyFileSync("README.md", "npm/README.md");
+await copyMdFiles()
