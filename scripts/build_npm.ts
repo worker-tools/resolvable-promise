@@ -17,12 +17,6 @@ await build({
   outDir: "./npm",
   shims: {},
   test: false,
-  // mappings: {
-  //   "https://esm.sh/cookie-store-interface@0.1.1/index.js": {
-  //     name: "cookie-store-interface",
-  //     version: "^0.1.1",
-  //   },
-  // },
   package: {
     // package.json properties
     name: `@worker-tools/${name}`,
@@ -46,7 +40,7 @@ await build({
   packageManager: 'pnpm',
   compilerOptions: {
     sourceMap: true,
-    target: 'ES2021',
+    target: 'ES2019',
   },
 });
 
