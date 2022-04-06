@@ -51,8 +51,15 @@ export class ResolvablePromise<T> /* extends Promise<T> */ implements Promise<T>
     return this.#promise.finally(onfinally);
   }
 
-  get [Symbol.toStringTag]() { return 'ResolvablePromise' };
+  [Symbol.toStringTag] = 'ResolvablePromise'
 }
+
+// // It's complicated..
+// Object.defineProperty(ResolvablePromise.prototype, Symbol.toStringTag, {
+//   get() { return 'ResolvablePromise' },
+//   enumerable: false,
+//   configurable: false,
+// })
 
 // Vanilla JS inheritance??
 // ResolvablePromise.prototype = Object.create(Promise.prototype);
