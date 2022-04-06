@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 export type Resolve<T> = (value: T | PromiseLike<T>) => void;
 export type Reject = (reason?: any) => void;
 export type ResolvablePromiseInit<T> = PromiseLike<T> | ((resolve: Resolve<T>, reject: Reject) => void);
@@ -20,20 +21,20 @@ export class ResolvablePromise<T> /* extends Promise<T> */ implements Promise<T>
   }
 
   resolve(x: T) {
-    if ((<any>globalThis).process?.env?.NODE_ENV === 'development' || (<any>globalThis).DEBUG) {
-      if (this.#settled) {
-        console.warn('ResolvablePromise cannot resolve after it has already settled. This is a no-op') 
-      }
-    }
+    // if ((<any>globalThis).process?.env?.NODE_ENV === 'development' || (<any>globalThis).DEBUG) {
+    //   if (this.#settled) {
+    //     console.warn('ResolvablePromise cannot resolve after it has already settled. This is a no-op') 
+    //   }
+    // }
     this.#resolve(x);
   }
 
   reject(reason?: any) {
-    if ((<any>globalThis).process?.env?.NODE_ENV === 'development' || (<any>globalThis).DEBUG) {
-      if (this.#settled) {
-        console.warn('ResolvablePromise cannot reject after it has already settled. This is a no-op') 
-      }
-    }
+    // if ((<any>globalThis).process?.env?.NODE_ENV === 'development' || (<any>globalThis).DEBUG) {
+    //   if (this.#settled) {
+    //     console.warn('ResolvablePromise cannot reject after it has already settled. This is a no-op') 
+    //   }
+    // }
     this.#reject(reason)
   }
 
