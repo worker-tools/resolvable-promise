@@ -3,7 +3,7 @@ export type Resolve<T> = (value: T | PromiseLike<T>) => void;
 export type Reject = (reason?: any) => void;
 export type ResolvablePromiseInit<T> = PromiseLike<T> | ((resolve: Resolve<T>, reject: Reject) => void);
 
-export class ResolvablePromise<T> /* extends Promise<T> */ implements Promise<T> {
+export class ResolvablePromise<T> implements Promise<T> {
   #promise: Promise<T>;
   #resolve!: Resolve<T>;
   #reject!: Reject;
@@ -20,22 +20,12 @@ export class ResolvablePromise<T> /* extends Promise<T> */ implements Promise<T>
     });
   }
 
-  resolve(x: T) {
-    // if ((<any>globalThis).process?.env?.NODE_ENV === 'development' || (<any>globalThis).DEBUG) {
-    //   if (this.#settled) {
-    //     console.warn('ResolvablePromise cannot resolve after it has already settled. This is a no-op') 
-    //   }
-    // }
+  resolve(x: T | PromiseLike<T>) {
     this.#resolve(x);
   }
 
   reject(reason?: any) {
-    // if ((<any>globalThis).process?.env?.NODE_ENV === 'development' || (<any>globalThis).DEBUG) {
-    //   if (this.#settled) {
-    //     console.warn('ResolvablePromise cannot reject after it has already settled. This is a no-op') 
-    //   }
-    // }
-    this.#reject(reason)
+    this.#reject(reason);
   }
 
   /** @deprecated Name of this property might change */
@@ -53,17 +43,6 @@ export class ResolvablePromise<T> /* extends Promise<T> */ implements Promise<T>
 
   [Symbol.toStringTag] = 'ResolvablePromise'
 }
-
-// // It's complicated..
-// Object.defineProperty(ResolvablePromise.prototype, Symbol.toStringTag, {
-//   get() { return 'ResolvablePromise' },
-//   enumerable: false,
-//   configurable: false,
-// })
-
-// Vanilla JS inheritance??
-// ResolvablePromise.prototype = Object.create(Promise.prototype);
-// ResolvablePromise.prototype.constructor = ResolvablePromise;
 
 /** @deprecated */
 export function resolvablePromise<T>() {
