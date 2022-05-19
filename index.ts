@@ -41,7 +41,7 @@ export class ResolvablePromise<T> implements Promise<T> {
     return this.#promise.finally(onfinally);
   }
 
-  [Symbol.toStringTag] = 'ResolvablePromise'
+  readonly [Symbol.toStringTag] = 'ResolvablePromise'
 }
 
 /** @deprecated */
